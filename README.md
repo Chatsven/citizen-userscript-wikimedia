@@ -12,6 +12,8 @@ This project is **NOT A FORK OF CITIZEN**, but rather a Citizen interface built 
 
 ## Installation
 
+### Userscript
+
 1. Install [Tampermonkey](https://www.tampermonkey.net/) (or Violentmonkey)
 
 2. [Click here to install](https://raw.githubusercontent.com/Chatsven/Citizen-skins-Wikimedia-Projects/main/citizen-wikimedia-projects.user.js) — Tampermonkey will automatically open the installation page.
