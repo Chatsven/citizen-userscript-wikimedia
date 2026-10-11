@@ -6,7 +6,7 @@ A script that allows you to use [Citizen](https://github.com/StarCitizenTools/me
 
 This project is **NOT A FORK OF CITIZEN**, but rather a Citizen interface built using scripts on the Vector 2022 DOM.
 
-<img width="1512" height="949" alt="image" src="https://github.com/user-attachments/assets/e54effe8-d21b-4053-a1b6-74aa8af14673" />
+<img width="3024" height="1895" alt="image" src="https://github.com/user-attachments/assets/dfe6670a-e49d-499e-95f4-4d14b754b595" />
 
 </div>
 
