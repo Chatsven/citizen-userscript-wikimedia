@@ -1,0 +1,16 @@
+{
+	"manifest_version": 3,
+	"name": "Citizen PHP extension",
+	"version": "1.0.18",
+	"description": "An extension that enables you to implement visual PHP caching within the Citizen script skin project.",
+	"content_scripts": [
+		{
+			"matches": ["*://*.wikipedia.org/*"],
+			"js": ["curtain.js"],
+			"css": ["hold.css"],
+			"run_at": "document_start",
+			"all_frames": false,
+			"world": "MAIN"
+		}
+	]
+}

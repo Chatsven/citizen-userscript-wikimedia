@@ -1,0 +1,49 @@
+html[data-cv-cached-page]:not([data-cv-ready]) body > *:not(.citizen-header):not(#__cv_version_badge__) {
+	visibility: hidden !important;
+}
+
+html[data-cv-swapping] body > * {
+	visibility: hidden !important;
+}
+
+html.cv-tx-leaving body > .citizen-page-container > *:not(.citizen-header) {
+	opacity: 0 !important;
+	transition: opacity 160ms ease !important;
+	pointer-events: none !important;
+}
+
+html.cv-loading::after {
+	--cv-h: 2px;
+	--cv-delay: 500ms;
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	box-sizing: border-box;
+	width: 100%;
+	height: var(--cv-h);
+	pointer-events: none;
+	z-index: 9999;
+	border-radius: 0 0 var(--border-radius-large, 8px) var(--border-radius-large, 8px);
+	background: linear-gradient(90deg, var(--color-progressive, #36c) 0%, var(--color-progressive, #36c) 100%) -10% 0 / 0 var(--cv-h) no-repeat, transparent;
+	filter: drop-shadow(0 0 16px var(--color-progressive, #36c)) drop-shadow(0 0 24px var(--color-progressive, #36c));
+	animation: cv-progressbar 1200ms linear var(--cv-delay) infinite alternate;
+}
+@keyframes cv-progressbar {
+	0% {
+		background-position: -10% 0;
+		background-size: 0 var(--cv-h);
+	}
+	30% {
+		background-position: -10% 0;
+		background-size: 30% var(--cv-h);
+	}
+	70% {
+		background-position: 110% 0;
+		background-size: 30% var(--cv-h);
+	}
+	100% {
+		background-position: 110% 0;
+		background-size: 0 var(--cv-h);
+	}
+}
