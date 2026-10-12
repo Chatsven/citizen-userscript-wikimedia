@@ -39,7 +39,7 @@ Safari (All Platforms) | ✅ | ❌ |
   1. For details, please refer to the [Tampermonkey Official Guide](https://www.tampermonkey.net/faq.php#Q209)
 1. Select the installation source:
 - [GitHub](https://raw.githubusercontent.com/Chatsven/Citizen-skins-Wikimedia-Projects/main/citizen-wikimedia-projects.user.js)
-1. Visit any *.wikipedia.org or *.wikimedia.org page to activate the script; **This script only runs on the Vector 2022 skin.**
+1. Visit any `*.wikipedia.org` or `*.wikimedia.org` page to activate the script; **This script only runs on the Vector 2022 skin.**
 1. Restart your browser if necessary.
 
 ### Visual Expansion
@@ -47,7 +47,7 @@ Safari (All Platforms) | ✅ | ❌ |
 1. Unzip the downloaded archive.
 1. Open Chrome and type 'chrome://extensions/' to enable **"Developer Mode"** in the Extensions management.
 1. Click 'Load unzipped extension' in Extensions to install, select the 'Citizen-Visual-Expansion' directory, and click OK.
-1. Visit any *.wikipedia.org or *.wikimedia.org page to activate the script; **this script only runs on the Vector 2022 skin and depends on `citizen-wikimedia-projects.user.js`**.
+1. Visit any `*.wikipedia.org` or `*.wikimedia.org` page to activate the script; **this script only runs on the Vector 2022 skin and depends on `citizen-wikimedia-projects.user.js`**.
 1. Restart your browser if necessary.
 
 ## Compatibility
