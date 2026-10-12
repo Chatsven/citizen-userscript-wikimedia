@@ -7,7 +7,7 @@
 
 </p>
 
-**English** [简体中文](https://github.com/Chatsven/citizen-userscript-wikimedia/blob/main/REDEME-ZH-CN.md) 
+**English** [简体中文](https://github.com/Chatsven/citizen-userscript-wikimedia/blob/main/README-ZH-CN.md) 
 
 This script allows you to use the [Citizen](https://github.com/StarCitizenTools/mediawiki-skins-Citizen) skin in Wikipedia and other Wikimedia projects.
 
