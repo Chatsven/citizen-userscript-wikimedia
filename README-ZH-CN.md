@@ -46,11 +46,10 @@ Safari（全平台）     | ✅ | ❌ |
 1. 必要时，重启浏览器
 
 ### 视觉拓展 （Expansion）
-1. 选择安装源：
-    - [GitHub](https://github.com/Chatsven/citizen-userscript-wikimedia/releases/download/v3.00/v3.00.zip)
-1.解压下载的封存档。
-1.打开Chorme键入'chrome://extensions /'，开启 “扩展程序” 管理中的 **“开发者模式”**。
-1.点击扩展程序中 '加载已解压的扩展程序’进行安装，选择‘Citizen-Visual-Expansion‘目录，点击确定即可。
+1. 下载[拓展](https://github.com/Chatsven/citizen-userscript-wikimedia/releases/download/v3.00/v3.00.zip)
+1. 解压下载的封存档。
+1. 打开Chorme键入'chrome://extensions /'，开启 “扩展程序” 管理中的 **“开发者模式”**。
+1. 点击扩展程序中 '加载已解压的扩展程序’进行安装，选择‘Citizen-Visual-Expansion‘目录，点击确定即可。
 1. 访问任何 `*.wikipedia.org` `*.wikimedia.org`页面即可激活脚本；**该脚本仅在 Vector 2022 皮肤上运行，且依赖`citizen-wikimedia-projects.user.js`**。
 1. 必要时，重启浏览器。
 
