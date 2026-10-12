@@ -19,7 +19,7 @@ This project **is not a fork of Citizen**, but rather a Citizen interface built 
 
 Browser Type | Supported Script Managers
 :------------------: | :---------------:
-Chrome / Chromium Kernel[^1] | [Tampermonkey][Tampermonkey], [Violentmonkey][Violentmonkey]
+Chrome / Chromium Kernel [^1] | [Tampermonkey][Tampermonkey], [Violentmonkey][Violentmonkey]
 Safari (All Platforms) | [Tampermonkey][Tampermonkey], [Macaque][Macaque], [Stay][Stay]
 [^1]: [Except for mobile](https://support.google.com/chrome/answer/2664769?hl=zh-Hans#zippy=%2C%E5%9C%A8%E6%89%8B%E6%9C%BA%E4%B8%8A%E5%AE%89%E8%A3%85%E6%89%A9%E5%B1%95%E7%A8%8B%E5%BA%8F)
 
