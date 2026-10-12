@@ -9,6 +9,7 @@
 **English** [简体中文](https://github.com/Chatsven/citizen-userscript-wikimedia/blob/main/README-ZH-CN.md) 
 
 This script allows you to use the [Citizen](https://github.com/StarCitizenTools/mediawiki-skins-Citizen) skin in Wikipedia and other Wikimedia projects.
+
 This project **is not a fork of Citizen**, but rather a Citizen interface built using scripts based on the Vector 2022 DOM.
 <img width="3024" height="1895" alt="image" src="https://github.com/user-attachments/assets/dfe6670a-e49d-499e-95f4-4d14b754b595" />
 </div>
