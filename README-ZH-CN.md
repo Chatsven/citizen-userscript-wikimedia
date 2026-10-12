@@ -6,6 +6,8 @@
 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="assets/badges/1-cc-by-nc-sa.svg" alt="CC BY-NC-SA 4.0"></a><a href="https://github.com/StarCitizenTools/mediawiki-skins-Citizen"><img src="assets/badges/2-mediawiki-citizen-skin.svg" alt="MediaWiki Citizen Skin"></a><a href="https://zh.wikipedia.org/"><img src="assets/badges/3-zh-wikipedia.svg" alt="中文维基百科"></a><a href="https://wikimediafoundation.org/"><img src="assets/badges/4-wikimedia-foundation.svg" alt="维基媒体基金会"></a>
 </p>
 
+**简体中文** [Engilsh](https://github.com/Chatsven/citizen-userscript-wikimedia/blob/main/READEME.md) 
+
 此脚本允许您在维基百科和其他维基媒体项目中使用 [Citizen](https://github.com/StarCitizenTools/mediawiki-skins-Citizen) 皮肤。
 
 本项目**不是 Citizen 的分支**，而是基于 Vector 2022 DOM 的脚本构建的 Citizen 界面。
