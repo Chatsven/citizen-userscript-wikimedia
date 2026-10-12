@@ -30,11 +30,11 @@ Safari (All Platforms) | ✅ | ❌ |
 
 ### User Scripts (Tampermonkey)
 1. Install a user script manager:
-- Recommended: [Tampermonkey][Tampermonkey]
+  - Recommended: [Tampermonkey][Tampermonkey]
 1. **Based on Chrome / Chromium Kernel Browser:
-1. Make sure to enable **"Developer Mode"** in the "Extensions" management.
-1. Make sure to enable **"Allow User Scripts"** in the Script Manager extension of the "Extensions" management.
-1. For details, please refer to the [Tampermonkey Official Guide](https://www.tampermonkey.net/faq.php#Q209)
+  1. Make sure to enable **"Developer Mode"** in the "Extensions" management.
+  1. Make sure to enable **"Allow User Scripts"** in the Script Manager extension of the "Extensions" management.
+  1. For details, please refer to the [Tampermonkey Official Guide](https://www.tampermonkey.net/faq.php#Q209)
 1. Select the installation source:
 - [GitHub](https://raw.githubusercontent.com/Chatsven/Citizen-skins-Wikimedia-Projects/main/citizen-wikimedia-projects.user.js)
 1. Visit any *.wikipedia.org or *.wikimedia.org page to activate the script; **This script only runs on the Vector 2022 skin.**
@@ -42,7 +42,7 @@ Safari (All Platforms) | ✅ | ❌ |
 
 ### Visual Expansion
 1. Choose an installation source:
-- [GitHub](https://github.com/Chatsven/citizen-userscript-wikimedia/releases/download/v3.00/v3.00.zip)
+  - [GitHub](https://github.com/Chatsven/citizen-userscript-wikimedia/releases/download/v3.00/v3.00.zip)
 1. Unzip the downloaded archive.
 1. Open Chrome and type 'chrome://extensions/' to enable **"Developer Mode"** in the Extensions management.
 1. Click 'Load unzipped extension' in Extensions to install, select the 'Citizen-Visual-Expansion' directory, and click OK.
