@@ -24,10 +24,10 @@ Safari (All Platforms) | [Tampermonkey][Tampermonkey], [Macaque][Macaque], [Stay
 ## Installation
 
 Browser Type | User Scripts | Visual Extensions |
-
 :------------------: | :---------------:| :---------------:
 Chrome / Chromium Kernel |✅ |✅ |
 Safari (All Platforms) | ✅ | ❌ |
+
 ### User Scripts (Tampermonkey)
 1. Install a user script manager:
 - Recommended: [Tampermonkey][Tampermonkey]
