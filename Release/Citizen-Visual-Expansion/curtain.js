@@ -314,11 +314,25 @@
 			});
 	}
 
+	function txInEditContext(t) {
+		try {
+			var root = doc.documentElement;
+			if (root.classList.contains('ve-active') ||
+				root.classList.contains('action-edit') ||
+				root.classList.contains('action-submit')) return true;
+			var bd = doc.body;
+			if (bd && (bd.classList.contains('action-edit') || bd.classList.contains('action-submit'))) return true;
+			if (t && t.closest && t.closest('[contenteditable="true"], .ve-ce-surface, .ve-ui-surface')) return true;
+		} catch (e) {}
+		return false;
+	}
+
 	function txOnClick(e) {
 		if (e.defaultPrevented) return;
 		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 		if (typeof window.__cvReboot !== 'function') return;
 		var t = e.target;
+		if (txInEditContext(t)) return;
 		var a = (t && t.closest) ? t.closest('a') : null;
 		if (!a) return;
 		if (a.target && a.target !== '_self') return;
