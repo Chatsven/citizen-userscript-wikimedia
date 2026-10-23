@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
-	"name": "Citizen PHP Visual Expansion",
-	"version": "1.0.18",
+	"name": "Citizen PHP extension",
+	"version": "1.0.19",
 	"description": "An extension that enables you to implement visual PHP caching within the Citizen script skin project.",
 	"content_scripts": [
 		{

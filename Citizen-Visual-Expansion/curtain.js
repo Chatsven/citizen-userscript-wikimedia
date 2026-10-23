@@ -1,58 +1,152 @@
 (function () {
-	try { if (localStorage.getItem('cv-skin') === 'vector-2022') return; } catch (e) {}
+	try { window.__cvExtensionReady = true; } catch (e) {}
+
+	var veDenied = false;
+	function veEnabled() {
+		try {
+			if (localStorage.getItem('cv-skin') === 'vector-2022') return false;
+			if (localStorage.getItem('cv-pref-ve') === '0') return false;
+		} catch (e) {}
+		return true;
+	}
+	if (!veEnabled()) return;
 	var KEY = 'cv-chrome-cache';
 	var doc = document;
 	var lastDocUrl = location.href.split('#')[0];
-	try {
-		var html = sessionStorage.getItem(KEY);
-		if (html && html.indexOf('citizen-header') !== -1) {
-			var t = doc.createElement('template');
-			t.innerHTML = html;
-			var node = t.content.querySelector('.citizen-header') || t.content.firstElementChild;
-			if (node) {
-				node.setAttribute('data-cv-cached', '1');
-				var old = doc.getElementById(node.id);
-				if (old && old.parentNode) old.parentNode.removeChild(old);
-				var attach = doc.body || doc.documentElement;
-				if (attach.childNodes[0]) attach.insertBefore(node, attach.childNodes[0]);
-				else attach.appendChild(node);
-				try { doc.documentElement.setAttribute('data-cv-cached-page', '1'); } catch (e) {}
-			}
-		}
-	} catch (e) {}
-	function armReadyFallback() {
-		try {
-			if (doc.documentElement.hasAttribute('data-cv-ready')) return;
-			doc.documentElement.setAttribute('data-cv-ready', '1');
-		} catch (e) {}
-	}
-	if (doc.readyState === 'complete') setTimeout(armReadyFallback, 2500);
-	else window.addEventListener('load', function () { setTimeout(armReadyFallback, 2500); });
-	function snap() {
-		try {
-			var b = doc.body;
-			if (!b) return;
-			var h = b.querySelector('.citizen-header');
-			if (!h || !h.outerHTML) return;
-			var clone = h.cloneNode(true);
-			var cards = clone.querySelectorAll('.citizen-menu__card');
-			for (var i = 0; i < cards.length; i++) {
-				if (cards[i].parentNode) cards[i].parentNode.removeChild(cards[i]);
-			}
-			var opens = clone.querySelectorAll('details[open]');
-			for (var j = 0; j < opens.length; j++) opens[j].removeAttribute('open');
-			if (clone.matches && clone.matches('details[open]')) clone.removeAttribute('open');
-			sessionStorage.setItem(KEY, clone.outerHTML);
-		} catch (e) {}
-	}
-	if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', snap);
-	else snap();
-	window.addEventListener('load', snap);
+	var phpStarted = false;
 
 	var TX_MAX_MS = 3000;
-	var TX_MAX_BYTES = 8 * 1024 * 1024; 
-	var TX_FADE_MS = 160; 
+	var TX_MAX_BYTES = 8 * 1024 * 1024;
+	var TX_FADE_MS = 160;
 	var txSeq = 0;
+	var SITE_ORIGIN = location.origin;
+
+	function cvVeReadAlive() {
+		try { return localStorage.getItem('cv-script-alive'); } catch (e) { return null; }
+	}
+	function cvVeReadSeen() {
+		try { return localStorage.getItem('cv-ve-seen'); } catch (e) { return null; }
+	}
+	function cvVeHandshake() {
+		var alive = cvVeReadAlive();
+		if (!alive || alive === cvVeReadSeen()) return false;
+		try { localStorage.setItem('cv-ve-seen', alive); } catch (e) {}
+		return true;
+	}
+	function cvVeScriptReady() {
+		return typeof window.__cvReboot === 'function';
+	}
+	function cvVeRollback() {
+		try {
+			var cached = doc.querySelectorAll('[data-cv-cached]');
+			for (var i = 0; i < cached.length; i++) {
+				if (cached[i].parentNode) cached[i].parentNode.removeChild(cached[i]);
+			}
+			var root = doc.documentElement;
+			root.removeAttribute('data-cv-cached-page');
+			root.removeAttribute('data-cv-ready');
+			root.removeAttribute('data-cv-swapping');
+			root.classList.remove('cv-loading');
+			root.classList.remove('cv-tx-leaving');
+		} catch (e) {}
+	}
+	function cvVeNoScriptNotice() {
+		try {
+			if (sessionStorage.getItem('cv-ve-noscript') === '1') return;
+			sessionStorage.setItem('cv-ve-noscript', '1');
+		} catch (e) {}
+		try {
+			alert('「视觉拓展」需要先安装配套的 Citizen 用户脚本才能使用。\n拓展已自动停用，页面按原生方式加载。');
+		} catch (e) {}
+	}
+	function cvVeStartPhp() {
+		if (phpStarted) return;
+		phpStarted = true;
+		cvVePhp();
+	}
+	function cvVeWatch() {
+		var verdict = function () {
+			if (cvVeScriptReady()) { cvVeStartPhp(); return; }
+			veDenied = true;
+			cvVeRollback();
+			cvVeNoScriptNotice();
+		};
+		var attach = function () { setTimeout(verdict, 1200); };
+		if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', attach);
+		else attach();
+	}
+	function cvVeAwaitScript(tries) {
+		if (cvVeHandshake()) { cvVeStartPhp(); cvVeWatch(); return; }
+		if (tries <= 0) { cvVeWatch(); return; }
+		setTimeout(function () { cvVeAwaitScript(tries - 1); }, 25);
+	}
+
+	if (cvVeHandshake()) { cvVeStartPhp(); cvVeWatch(); }
+	else cvVeAwaitScript(12);
+	function cvVePhp() {
+		if (doc.readyState === 'loading') {
+			try {
+				var html = sessionStorage.getItem(KEY);
+				if (html && html.indexOf('citizen-header') !== -1) {
+					var t = doc.createElement('template');
+					t.innerHTML = html;
+					var node = t.content.querySelector('.citizen-header') || t.content.firstElementChild;
+					if (node) {
+						node.setAttribute('data-cv-cached', '1');
+						var old = doc.getElementById(node.id);
+						if (old && old.parentNode) old.parentNode.removeChild(old);
+						var attach = doc.body || doc.documentElement;
+						if (attach.childNodes[0]) attach.insertBefore(node, attach.childNodes[0]);
+						else attach.appendChild(node);
+						try { doc.documentElement.setAttribute('data-cv-cached-page', '1'); } catch (e) {}
+					}
+				}
+			} catch (e) {}
+		}
+
+		function armReadyFallback() {
+			try {
+				if (doc.documentElement.hasAttribute('data-cv-ready')) return;
+				doc.documentElement.setAttribute('data-cv-ready', '1');
+			} catch (e) {}
+		}
+		if (doc.readyState === 'complete') setTimeout(armReadyFallback, 2500);
+		else window.addEventListener('load', function () { setTimeout(armReadyFallback, 2500); });
+
+		function snap() {
+			try {
+				var b = doc.body;
+				if (!b) return;
+				var h = b.querySelector('.citizen-header');
+				if (!h || !h.outerHTML) return;
+				var clone = h.cloneNode(true);
+				var cards = clone.querySelectorAll('.citizen-menu__card');
+				for (var i = 0; i < cards.length; i++) {
+					if (cards[i].parentNode) cards[i].parentNode.removeChild(cards[i]);
+				}
+				var opens = clone.querySelectorAll('details[open]');
+				for (var j = 0; j < opens.length; j++) opens[j].removeAttribute('open');
+				if (clone.matches && clone.matches('details[open]')) clone.removeAttribute('open');
+				sessionStorage.setItem(KEY, clone.outerHTML);
+			} catch (e) {}
+		}
+		if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', snap);
+		else snap();
+		window.addEventListener('load', snap);
+
+		doc.addEventListener('click', txOnClick, true);
+		window.addEventListener('popstate', function () {
+			if (veDenied || !veEnabled()) return;
+			var base = location.href.split('#')[0];
+			var sameDoc = (base === lastDocUrl);
+			lastDocUrl = base;
+			if (sameDoc) return;
+			var href = txResolveUrl(location.href);
+			if (href) { txNav(href, true); return; }
+			try { doc.documentElement.removeAttribute('data-cv-swapping'); } catch (e) {}
+			if (location.origin === SITE_ORIGIN) location.reload();
+		});
+	}
 
 	function txSetLoading(on) {
 		try { doc.documentElement.classList[on ? 'add' : 'remove']('cv-loading'); } catch (e) {}
@@ -60,8 +154,6 @@
 	function txSetLeaving(on) {
 		try { doc.documentElement.classList[on ? 'add' : 'remove']('cv-tx-leaving'); } catch (e) {}
 	}
-
-	var SITE_ORIGIN = location.origin;
 
 	function txResolveUrl(raw) {
 		try {
@@ -314,11 +406,26 @@
 			});
 	}
 
+	function txInEditContext(t) {
+		try {
+			var root = doc.documentElement;
+			if (root.classList.contains('ve-active') ||
+				root.classList.contains('action-edit') ||
+				root.classList.contains('action-submit')) return true;
+			var bd = doc.body;
+			if (bd && (bd.classList.contains('action-edit') || bd.classList.contains('action-submit'))) return true;
+			if (t && t.closest && t.closest('[contenteditable="true"], .ve-ce-surface, .ve-ui-surface')) return true;
+		} catch (e) {}
+		return false;
+	}
+
 	function txOnClick(e) {
 		if (e.defaultPrevented) return;
+		if (veDenied || !veEnabled()) return;
 		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 		if (typeof window.__cvReboot !== 'function') return;
 		var t = e.target;
+		if (txInEditContext(t)) return;
 		var a = (t && t.closest) ? t.closest('a') : null;
 		if (!a) return;
 		if (a.target && a.target !== '_self') return;
@@ -327,16 +434,4 @@
 		e.preventDefault();
 		txNav(href);
 	}
-	doc.addEventListener('click', txOnClick, true);
-
-	window.addEventListener('popstate', function () {
-		var base = location.href.split('#')[0];
-		var sameDoc = (base === lastDocUrl);
-		lastDocUrl = base;
-		if (sameDoc) return;
-		var href = txResolveUrl(location.href);
-		if (href) { txNav(href, true); return; }
-		try { doc.documentElement.removeAttribute('data-cv-swapping'); } catch (e) {}
-		if (location.origin === SITE_ORIGIN) location.reload();
-	});
 })();
