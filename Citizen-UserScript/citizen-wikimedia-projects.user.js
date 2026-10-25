@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vector 2022 → Citizen skin
 // @namespace    Citizen
-// @version      3.50
+// @version      3.51
 // @description  A script that allows you to use Citizen Skin in Wikipedia and other Wikimedia projects.
 // @author       Chatsven
 // @homepageURL  https://github.com/Chatsven/citizen-userscript-wikimedia
