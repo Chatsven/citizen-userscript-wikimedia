@@ -5,8 +5,8 @@
 // @description  A script that allows you to use Citizen Skin in Wikipedia and other Wikimedia projects.
 // @author       Chatsven
 // @homepageURL  https://github.com/Chatsven/citizen-userscript-wikimedia
-// @updateURL    https://raw.githubusercontent.com/Chatsven/citizen-userscript-wikimedia/main/citizen-wikimedia-projects.user.js
-// @downloadURL  https://raw.githubusercontent.com/Chatsven/citizen-userscript-wikimedia/main/citizen-wikimedia-projects.user.js
+// @updateURL    https://raw.githubusercontent.com/Chatsven/citizen-userscript-wikimedia/main/Citizen-UserScript/citizen-wikimedia-projects.user.js
+// @downloadURL  https://raw.githubusercontent.com/Chatsven/citizen-userscript-wikimedia/main/Citizen-UserScript/citizen-wikimedia-projects.user.js
 // @match        *://*.wikipedia.org/*
 // @match        *://*.wiktionary.org/*
 // @match        *://*.wikisource.org/*
