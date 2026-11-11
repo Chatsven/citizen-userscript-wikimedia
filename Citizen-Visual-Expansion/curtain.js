@@ -1,6 +1,18 @@
 (function () {
+	
+	
+	
+	
+	
+	
+	
 	try { window.__cvExtensionReady = true; } catch (e) {}
 
+	
+	
+	
+	
+	
 	var veDenied = false;
 	function veEnabled() {
 		try {
@@ -15,12 +27,22 @@
 	var lastDocUrl = location.href.split('#')[0];
 	var phpStarted = false;
 
+	
+	
+	
 	var TX_MAX_MS = 3000;
 	var TX_MAX_BYTES = 8 * 1024 * 1024;
 	var TX_FADE_MS = 160;
 	var txSeq = 0;
 	var SITE_ORIGIN = location.origin;
 
+	
+	
+	
+	
+	
+	
+	
 	function cvVeReadAlive() {
 		try { return localStorage.getItem('cv-script-alive'); } catch (e) { return null; }
 	}
@@ -36,6 +58,9 @@
 	function cvVeScriptReady() {
 		return typeof window.__cvReboot === 'function';
 	}
+	
+	
+	
 	function cvVeRollback() {
 		try {
 			var cached = doc.querySelectorAll('[data-cv-cached]');
@@ -64,6 +89,9 @@
 		phpStarted = true;
 		cvVePhp();
 	}
+	
+	
+	
 	function cvVeWatch() {
 		var verdict = function () {
 			if (cvVeScriptReady()) { cvVeStartPhp(); return; }
@@ -75,15 +103,25 @@
 		if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', attach);
 		else attach();
 	}
+	
+	
+	
 	function cvVeAwaitScript(tries) {
 		if (cvVeHandshake()) { cvVeStartPhp(); cvVeWatch(); return; }
 		if (tries <= 0) { cvVeWatch(); return; }
 		setTimeout(function () { cvVeAwaitScript(tries - 1); }, 25);
 	}
 
+	
+	
 	if (cvVeHandshake()) { cvVeStartPhp(); cvVeWatch(); }
 	else cvVeAwaitScript(12);
+	
 	function cvVePhp() {
+		
+		
+		
+		
 		if (doc.readyState === 'loading') {
 			try {
 				var html = sessionStorage.getItem(KEY);
@@ -104,6 +142,8 @@
 			} catch (e) {}
 		}
 
+		
+		
 		function armReadyFallback() {
 			try {
 				if (doc.documentElement.hasAttribute('data-cv-ready')) return;
@@ -113,6 +153,9 @@
 		if (doc.readyState === 'complete') setTimeout(armReadyFallback, 2500);
 		else window.addEventListener('load', function () { setTimeout(armReadyFallback, 2500); });
 
+		
+		
+		
 		function snap() {
 			try {
 				var b = doc.body;
@@ -134,6 +177,8 @@
 		else snap();
 		window.addEventListener('load', snap);
 
+		
+		
 		doc.addEventListener('click', txOnClick, true);
 		window.addEventListener('popstate', function () {
 			if (veDenied || !veEnabled()) return;
@@ -182,6 +227,28 @@
 			if (u.pathname === location.pathname && u.search === location.search) return null;
 			return abs;
 		} catch (e) { return null; }
+	}
+
+	
+	function txIsMediaViewerLink(a) {
+		try {
+			if (!a) return false;
+			if (a.classList && (a.classList.contains('mw-file-description') ||
+				a.classList.contains('image'))) return true;
+			if (!a.querySelector || !a.querySelector('img')) return false;
+			var href = a.getAttribute('href') || '';
+			var m = /^\/wiki\/([^\/?#]+)/.exec(href);
+			if (!m) return false;
+			var ns = decodeURIComponent(m[1]).split(':')[0];
+			return /^(File|Image|文件|檔案|档案)$/i.test(ns);
+		} catch (e) { return false; }
+	}
+	
+	
+	function txMediaViewerOn() {
+		try {
+			return !!(window.mw && mw.config && mw.config.get('wgMediaViewerOnClick'));
+		} catch (e) { return false; }
 	}
 
 	function txBalanced(html, start) {
@@ -327,6 +394,49 @@
 		try { location.assign(href); } catch (e) { location.href = href; }
 	}
 
+	
+	function txSyncHead(parsed) {
+		var jobs = [];
+		try {
+			var head = doc.head;
+			if (!head || !parsed || !parsed.head) return null;
+			var links = parsed.head.querySelectorAll('link[rel="stylesheet"][href]');
+			for (var i = 0; i < links.length; i++) {
+				var href = links[i].href;
+				if (!href) continue;
+				var exists = false;
+				var cur = head.querySelectorAll('link[rel="stylesheet"]');
+				for (var k = 0; k < cur.length; k++) {
+					if (cur[k].href === href) { exists = true; break; }
+				}
+				if (exists) continue;
+				var l = doc.createElement('link');
+				l.rel = 'stylesheet';
+				l.href = href;
+				if (links[i].media) l.media = links[i].media;
+				head.appendChild(l);
+			}
+			var mods = [];
+			var scripts = parsed.head.querySelectorAll('script[src*="load.php"]');
+			for (var j = 0; j < scripts.length; j++) {
+				try {
+					var u = new URL(scripts[j].src, location.href);
+					var m = u.searchParams.get('modules');
+					if (!m) continue;
+					m.split('|').forEach(function (name) {
+						if (!name || name === 'startup') return;
+						if (mods.indexOf(name) === -1) mods.push(name);
+					});
+				} catch (e) {}
+			}
+			if (mods.length && window.mw && mw.loader && mw.loader.load) {
+				try { jobs.push(mw.loader.load(mods)); } catch (e) {}
+			}
+		} catch (e) {}
+		if (!jobs.length) return null;
+		return Promise.all(jobs.map(function (j) { return Promise.resolve(j); }));
+	}
+
 	function txSwap(url, html, replace) {
 		if (typeof window.__cvReboot !== 'function') return false;
 		var parsed;
@@ -355,24 +465,42 @@
 			} catch (e) {}
 			lastDocUrl = location.href.split('#')[0];
 
+			
+			
+			try {
+				if (cfg && window.mw && mw.config && mw.config.set) mw.config.set(cfg);
+			} catch (e) {}
 			txRebindUserInfoCard(cfg);
 
-			var settled = false;
-			var timer = setTimeout(function () {
-				if (settled) return; settled = true;
-				txFallback(url);
-			}, TX_MAX_MS);
-			window.__cvReboot(cfg, function () {
-				if (settled) return; settled = true;
-				clearTimeout(timer);
-				if (window.__cvInited) {
-					try { doc.documentElement.removeAttribute('data-cv-swapping'); } catch (e) {}
-					txSetLoading(false);
-					try { window.scrollTo(0, 0); } catch (e) {}
-				} else {
+			
+			
+			var sync = txSyncHead(parsed);
+			var boot = function () {
+				var settled = false;
+				var timer = setTimeout(function () {
+					if (settled) return; settled = true;
 					txFallback(url);
-				}
-			});
+				}, TX_MAX_MS);
+				window.__cvReboot(cfg, function () {
+					if (settled) return; settled = true;
+					clearTimeout(timer);
+					if (window.__cvInited) {
+						try { doc.documentElement.removeAttribute('data-cv-swapping'); } catch (e) {}
+						txSetLoading(false);
+						try { window.scrollTo(0, 0); } catch (e) {}
+					} else {
+						txFallback(url);
+					}
+				});
+			};
+			if (sync && typeof sync.then === 'function') {
+				
+				
+				var started = false;
+				var go = function () { if (started) return; started = true; boot(); };
+				sync.then(go, go);
+				setTimeout(go, 1500);
+			} else boot();
 		}, TX_FADE_MS);
 		return true;
 	}
@@ -421,6 +549,7 @@
 
 	function txOnClick(e) {
 		if (e.defaultPrevented) return;
+		
 		if (veDenied || !veEnabled()) return;
 		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 		if (typeof window.__cvReboot !== 'function') return;
@@ -429,6 +558,7 @@
 		var a = (t && t.closest) ? t.closest('a') : null;
 		if (!a) return;
 		if (a.target && a.target !== '_self') return;
+		if (txIsMediaViewerLink(a) && txMediaViewerOn()) return;
 		var href = txIsInternal(a);
 		if (!href) return;
 		e.preventDefault();
